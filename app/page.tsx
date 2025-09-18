@@ -1,15 +1,11 @@
-import { AccountInfo } from "./components/AccountInfo";
-import ContractInteraction from "./components/ContractInteraction";
-import { SendTranscation } from "./components/SendTranscation";
-import { WalletConnect } from "./components/WalletConnect";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <>
-      <WalletConnect />
-      <AccountInfo />
-      <SendTranscation />
-      <ContractInteraction />
-    </>
+    <ul>
+      <li>
+        <Link href="/wagmi">Wagmi</Link>
+      </li>
+    </ul>
   );
 }

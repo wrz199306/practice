@@ -1,5 +1,6 @@
 "use client";
 
+import { sepolia } from "viem/chains";
 import { useAccount, useBalance } from "wagmi";
 
 export function AccountInfo() {
@@ -7,7 +8,7 @@ export function AccountInfo() {
   const { data: balance } = useBalance({
     address,
     unit: "ether",
-    chainId: 11155111,
+    chainId: sepolia.id,
   });
 
   if (isConnected) {
