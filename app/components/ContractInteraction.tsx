@@ -1,0 +1,76 @@
+"use client";
+
+import { useReadContract, useWriteContract, useAccount } from "wagmi";
+import { parseAbi, parseEther } from "viem";
+import { useState } from "react";
+
+const erc20Abi = parseAbi([
+  "function balanceOf(address owner) view returns (uint256)",
+  "function transfer(address to, uint256 amount) returns (bool)",
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+]);
+
+const CONTRACT_ADDRESS = "0x5c0E35FFBA10B837258A03ae68AdcD313172a2B3";
+
+export default function ContractInteraction() {
+  const { address } = useAccount();
+
+  // 读取合约数据
+  const { data: name } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: erc20Abi,
+    functionName: "name",
+  });
+
+  const { data: symbol } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: erc20Abi,
+    functionName: "symbol",
+  });
+
+  const { data: balance } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+  });
+
+  // 写入合约
+  const { writeContract, isPending } = useWriteContract();
+
+  const [to, setTo] = useState("");
+  const [value, setValue] = useState("");
+  const handleTransfer = () => {
+    writeContract({
+      address: CONTRACT_ADDRESS,
+      abi: erc20Abi,
+      functionName: "transfer",
+      args: [to as `0x${string}`, parseEther(value)],
+    });
+  };
+
+  return (
+    <div>
+      <h3>合约交互</h3>
+      <p>代币名称: {name}</p>
+      <p>代币符号: {symbol}</p>
+      <p>余额: {balance?.toString()}</p>
+      <div>
+        <input
+          placeholder="address"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+        />
+        <input
+          placeholder="value"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button onClick={handleTransfer} disabled={isPending}>
+          {isPending ? "处理中..." : "转账"}
+        </button>
+      </div>
+    </div>
+  );
+}
