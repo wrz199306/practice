@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useSendTransaction } from "wagmi";
-import { parseEther } from "viem";
-import { sepolia } from "viem/chains";
+import { Address, parseEther } from "viem";
+import { useAccount, useSendTransaction } from "../hook";
 
 export function SendTranscation() {
   const { isConnected } = useAccount();
-  const { sendTransaction, isPending, error } = useSendTransaction();
+  const { sendTransaction, isPending } = useSendTransaction();
 
   const [address, setAddress] = useState("");
   const [value, setValue] = useState("");
@@ -15,9 +14,8 @@ export function SendTranscation() {
   function handleSend() {
     if (!address.trim() || !value.trim()) return;
     sendTransaction({
-      to: address as `0x${string}`,
+      to: address as Address,
       value: parseEther(value),
-      chainId: sepolia.id,
     });
   }
 
@@ -39,7 +37,6 @@ export function SendTranscation() {
         <button disabled={isPending} onClick={handleSend}>
           {isPending ? "Loading" : "发送"}
         </button>
-        {error && <p>错误: {error.message}</p>}
       </div>
     );
   }

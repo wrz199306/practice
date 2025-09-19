@@ -6,6 +6,9 @@ export default function Home() {
       <li>
         <Link href="/wagmi">Wagmi</Link>
       </li>
+      <li>
+        <Link href="/viem">Viem</Link>
+      </li>
     </ul>
   );
 }

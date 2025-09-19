@@ -1,5 +1,6 @@
 "use client";
 
+import { formatEther } from "viem";
 import { sepolia } from "viem/chains";
 import { useAccount, useBalance } from "wagmi";
 
@@ -17,10 +18,7 @@ export function AccountInfo() {
         <p>地址: {address}</p>
         <p>
           余额:
-          {balance
-            ? Number(balance.value) / Math.pow(10, balance.decimals)
-            : 0}{" "}
-          {balance?.symbol}
+          {balance?.value && formatEther(balance?.value)} {balance?.symbol}
         </p>
       </div>
     );

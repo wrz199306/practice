@@ -63,6 +63,7 @@ export default function ContractInteraction() {
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: erc20Abi,
+      chain: sepolia,
       functionName: "transfer",
       args: [to as `0x${string}`, parseEther(value)],
     });
