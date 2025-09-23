@@ -9,6 +9,9 @@ export default function Home() {
       <li>
         <Link href="/viem">Viem</Link>
       </li>
+      <li>
+        <Link href="/rainbowkit">rainbowkit</Link>
+      </li>
     </ul>
   );
 }
