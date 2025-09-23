@@ -87,7 +87,24 @@ export function useConnect() {
     setPending(false);
   }
   async function disconnect() {
-    await ethereum?.disconnect();
+    // await ethereum?.disconnect();
+    try {
+      if ((window as any).ethereum) {
+        await (window as any).ethereum.request({
+          method: "wallet_revokePermissions",
+          params: [
+            {
+              eth_accounts: {}, // 撤销账户访问权限
+            },
+          ],
+        });
+        console.log("Disconnected from MetaMask");
+      } else {
+        console.error("MetaMask not detected");
+      }
+    } catch (error) {
+      console.error("Error disconnecting:", error);
+    }
   }
 
   return { isPending, connect, disconnect };

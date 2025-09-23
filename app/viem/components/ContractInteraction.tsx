@@ -3,7 +3,8 @@
 import { getPublicClient, getWalletClient, useAccount } from "../hook";
 import { abi } from "../abi";
 import { useEffect, useMemo, useState } from "react";
-import { getContract, formatUnits, parseEther } from "viem";
+import { getContract, formatUnits, parseEther, Address } from "viem";
+import { sepolia } from "viem/chains";
 
 const CONTRACT_ADDRESS = "0x5c0E35FFBA10B837258A03ae68AdcD313172a2B3";
 
@@ -43,15 +44,24 @@ export function ContractInteraction() {
   const [isPending, setPending] = useState(false);
 
   async function handleTransfer() {
-    if (!address) return;
-    setPending(true);
-    try {
-      await contract.write.transfer([to, parseEther(value)], {
-        account: address,
-      });
-    } finally {
-      setPending(false);
-    }
+    await walletClient.writeContract({
+      address: CONTRACT_ADDRESS,
+      abi,
+      account: address as Address,
+      functionName: "transfer",
+      args: [to, parseEther(value)],
+      chain: sepolia,
+    });
+
+    // if (!address) return;
+    // setPending(true);
+    // try {
+    //   await contract.write.transfer([to, parseEther(value)], {
+    //     account: address,
+    //   });
+    // } finally {
+    //   setPending(false);
+    // }
   }
 
   useEffect(() => {
@@ -68,7 +78,7 @@ export function ContractInteraction() {
       }
     );
     const toUnWatch = contract.watchEvent.Transfer(
-      { from: address },
+      { to: address },
       {
         onLogs(logs) {
           console.log(logs);
