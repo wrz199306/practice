@@ -7,7 +7,6 @@ import {
   WalletClient,
   type Address,
   webSocket,
-  getContract,
 } from "viem";
 import { sepolia } from "viem/chains";
 

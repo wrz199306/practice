@@ -12,6 +12,9 @@ export default function Home() {
       <li>
         <Link href="/rainbowkit">rainbowkit</Link>
       </li>
+      <li>
+        <Link href="/stake">stake</Link>
+      </li>
     </ul>
   );
 }
